@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <title>Fishing</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width,height=device-height ,initial-scale=1">
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/style.css"/>
+
+    <script type="text/javascript" src="vue/vue.min.js"></script>
+    <script type="text/javascript" src="src/game.js"></script>
+    <script type="text/x-template" id="modal-template">
+        <transition name="modal">
+          <div class="modal-mask">
+            <div class="modal-wrapper">
+              <div class="modal-container">
+  
+                <div class="modal-body">
+                  <slot name="body">
+                    
+                  </slot>
+                </div>
+  
+                <div class="modal-footer">
+                  <slot name="footer">
+                    <button class="btn btn-success" @click="$emit('close')">
+                      点击继续
+                    </button>
+                  </slot>
+                </div>
+              </div>
+            </div>
+          </div>
+        </transition>
+      </script>
+
+</head>
+
+<body>
+    <div id="app">
+        <div class="score" v-if="isStart">
+            <span>当前剩余鱼：<label>{{score}}</label></span>
+        </div>
+        <div class="content">
+            <p>{{ questions[curIndex].content }}</p>
+        </div>
+        <ul class="option" v-if="questions[curIndex].options && questions[curIndex].options.length > 0">
+            <li v-for="(item, index) in questions[curIndex].options" v-on:click="pick(item)">
+                <span v-if="!item.goOn">{{optionSymbol[index]}}、</span>{{item.content}}
+            </li>
+        </ul>
+        <div class="start" v-if="!isStart" v-on:click="start">
+            <button class="btn btn-primary">点击开始</button>
+        </div>
+        <modal v-if="showModal" @close="closeModal">
+            <!--
+          you can use custom content here to overwrite
+          default content
+        -->
+            <div slot="body">{{tip}}
+              <a v-on:click="showTip()">查看解析</a>
+              <p v-show="isShowTip" class="tip">解析：{{questions[curIndex].tip}}</p>
+            </div>
+          </modal>
+          <modal v-if="showResult" @close="closeModal">
+            <!--
+          you can use custom content here to overwrite
+          default content
+        -->
+            <div slot="body">
+              您的最后得分为：<label class="result-score">{{score}}</label>
+            </div>
+            <div slot="footer">
+              
+            </div>
+          </modal>
+    </div>
+    
+</body>
+
+</html>
