@@ -957,6 +957,7 @@
                         this.curIndex++;
                         return;
                     }
+                    this.extra = !!this.questions[this.curIndex].extra? this.questions[this.curIndex].extra : null;
                     this.tip = item.result;
                     this.showModal = true;
                     if (item.isPlus) {

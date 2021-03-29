@@ -57,7 +57,9 @@
           you can use custom content here to overwrite
           default content
         -->
-            <div slot="body">{{tip}}
+            <div slot="body">
+              <p v-if="extra">{{extra}}</p>
+              {{tip}}
               <a v-on:click="showTip()">查看解析</a>
               <p v-show="isShowTip" class="tip">解析：{{questions[curIndex].tip}}</p>
             </div>
