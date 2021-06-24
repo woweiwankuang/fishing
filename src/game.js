@@ -977,6 +977,27 @@
                 },
                 showTip: function() {
                     this.isShowTip = true;
+                },
+                //EventSource长连接 示例
+                connect: function() {
+                    var that = this;
+                    var eventSource = new EventSource('http://localhost:5555/connect?userId=1');
+                    eventSource.addEventListener('open', function (e) {
+                        console.log('connected');
+                    });
+                    eventSource.addEventListener('message', function (e) {
+                        let data = JSON.parse(e.data);
+                        that.score = data;
+
+                    }, false);
+                    eventSource.addEventListener('error', function (e) {
+                        if (e.readyState === EventSource.CLOSED) {
+                            console.log('error');
+                        }
+                    }, false);
+                    eventSource.addEventListener('close', function (e) {
+                        console.log('CLOSED');
+                    }, false);
                 }
             }
         });
